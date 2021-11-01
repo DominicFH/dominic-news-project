@@ -38,15 +38,15 @@ const seed = (data) => {
 			// CREATE articles
 			.then(() => {
 				return db.query(`
-          CREATE TABLE articles (
-          article_id SERIAL PRIMARY KEY,
-          title VARCHAR (100) NOT NULL,
-          body TEXT NOT NULL,
-          votes INT DEFAULT 0,
-          topic VARCHAR references topics(slug),
-          author VARCHAR (20) references users(username),
-          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-          );`);
+			CREATE TABLE articles (
+			article_id SERIAL PRIMARY KEY,
+			title VARCHAR (100) NOT NULL,
+			body TEXT NOT NULL,
+			votes INT DEFAULT 0,
+			topic VARCHAR references topics(slug),
+			author VARCHAR (20) references users(username),
+			created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+			);`);
 			})
 			// CREATE comments
 			.then(() => {
@@ -100,8 +100,8 @@ const seed = (data) => {
 				]);
 				const insertQuery = format(
 					`INSERT INTO articles (title, body, votes, topic, author, created_at)
-          VALUES
-          %L;`,
+					VALUES
+					%L;`,
 					articleValues
 				);
 				return db.query(insertQuery);
