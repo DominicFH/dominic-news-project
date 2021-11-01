@@ -22,4 +22,12 @@ describe("GET /api/topics", () => {
 				});
 			});
 	});
+	it("status 400: responds with error message if url entered incorrectly", () => {
+		return request(app)
+			.get("/api/catpics")
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.message).toBe("Invalid path");
+			});
+	});
 });
