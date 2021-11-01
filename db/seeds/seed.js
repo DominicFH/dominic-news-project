@@ -4,9 +4,9 @@ const format = require("pg-format");
 
 const seed = (data) => {
 	const { articleData, commentData, topicData, userData } = data;
-	// Drop tables if exist, order based on referencing
 	return (
 		db
+			// Dropping existing tables for each run of seed
 			.query(`DROP TABLE IF EXISTS comments;`)
 			.then(() => {
 				return db.query(`DROP TABLE IF EXISTS articles;`);
@@ -17,7 +17,7 @@ const seed = (data) => {
 			.then(() => {
 				return db.query(`DROP TABLE IF EXISTS topics;`);
 			})
-			// Create tables, order based on referencing
+			// Creating tables, order based on referencing
 			// CREATE topics
 			.then(() => {
 				return db.query(`
@@ -68,7 +68,7 @@ const seed = (data) => {
 				const insertQuery = format(
 					`INSERT INTO topics (slug, description)
           VALUES
-          %L RETURNING *;`,
+          %L;`,
 					topicsValues
 				);
 				return db.query(insertQuery);
@@ -83,7 +83,7 @@ const seed = (data) => {
 				const insertQuery = format(
 					`INSERT INTO users (username, avatar_url, name)
           VALUES
-          %L RETURNING *;`,
+          %L;`,
 					userValues
 				);
 				return db.query(insertQuery);
@@ -101,8 +101,25 @@ const seed = (data) => {
 				const insertQuery = format(
 					`INSERT INTO articles (title, body, votes, topic, author, created_at)
           VALUES
-          %L RETURNING *;`,
+          %L;`,
 					articleValues
+				);
+				return db.query(insertQuery);
+			})
+			// INSERT INTO comments
+			.then(() => {
+				const commentValues = extractData(commentData, [
+					"author",
+					"article_id",
+					"votes",
+					"created_at",
+					"body",
+				]);
+				const insertQuery = format(
+					`INSERT INTO comments (author, article_id, votes, created_at, body)
+          VALUES
+          %L;`,
+					commentValues
 				);
 				return db.query(insertQuery);
 			})
