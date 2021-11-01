@@ -37,7 +37,6 @@ describe("GET /api/articles/:article_id", () => {
 			.get("/api/articles/1")
 			.expect(200)
 			.then(({ body }) => {
-				console.log(body.article);
 				expect(body.article[0]).toMatchObject({
 					author: expect.any(String),
 					title: expect.any(String),
@@ -48,6 +47,14 @@ describe("GET /api/articles/:article_id", () => {
 					votes: expect.any(Number),
 					comment_count: expect.any(String),
 				});
+			});
+	});
+	it("status 404: responds with error message if article id is invalid ", () => {
+		return request(app)
+			.get("/api/articles/99")
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.message).toBe("No article found");
 			});
 	});
 });
