@@ -18,6 +18,7 @@ const seed = (data) => {
 				return db.query(`DROP TABLE IF EXISTS topics;`);
 			})
 			// Create tables, order based on referencing
+			// CREATE topics
 			.then(() => {
 				return db.query(`
           CREATE TABLE topics (
@@ -25,6 +26,7 @@ const seed = (data) => {
           description TEXT NOT NULL
           );`);
 			})
+			// CREATE users
 			.then(() => {
 				return db.query(`
           CREATE TABLE users (
@@ -33,11 +35,12 @@ const seed = (data) => {
           name VARCHAR (30)
           );`);
 			})
+			// CREATE articles
 			.then(() => {
 				return db.query(`
           CREATE TABLE articles (
           article_id SERIAL PRIMARY KEY,
-          title VARCHAR (50) NOT NULL,
+          title VARCHAR (100) NOT NULL,
           body TEXT NOT NULL,
           votes INT DEFAULT 0,
           topic VARCHAR references topics(slug),
@@ -45,6 +48,7 @@ const seed = (data) => {
           created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
           );`);
 			})
+			// CREATE comments
 			.then(() => {
 				return db.query(`
           CREATE TABLE comments (
@@ -56,7 +60,8 @@ const seed = (data) => {
           body TEXT NOT NULL
           );`);
 			})
-			// Insert into tables
+			// Inserting into tables
+			// INSERT INTO topics
 			.then(() => {
 				// Take the topic data and format it to be used in insert query
 				const topicsValues = extractData(topicData, ["slug", "description"]);
@@ -68,6 +73,7 @@ const seed = (data) => {
 				);
 				return db.query(insertQuery);
 			})
+			// INSERT INTO users
 			.then(() => {
 				const userValues = extractData(userData, [
 					"username",
@@ -79,6 +85,24 @@ const seed = (data) => {
           VALUES
           %L RETURNING *;`,
 					userValues
+				);
+				return db.query(insertQuery);
+			})
+			// INSERT INTO articles
+			.then(() => {
+				const articleValues = extractData(articleData, [
+					"title",
+					"body",
+					"votes",
+					"topic",
+					"author",
+					"created_at",
+				]);
+				const insertQuery = format(
+					`INSERT INTO articles (title, body, votes, topic, author, created_at)
+          VALUES
+          %L RETURNING *;`,
+					articleValues
 				);
 				return db.query(insertQuery);
 			})
