@@ -174,4 +174,31 @@ describe("GET /api/articles", () => {
 				expect(body.articles).toBeSortedBy(`${sort_by}`, { descending: false });
 			});
 	});
+	it("status 400: responds with an error message if sort_by query is an invalid data type or does not reference a valid column", () => {
+		const sort_by = 3;
+		return request(app)
+			.get(`/api/articles?sort_by=${sort_by}`)
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.message).toBe("Invalid sort_by query");
+			});
+	});
+	it("status 400: responds with an error message if order query is neither 'asc' or 'desc'", () => {
+		const order = 2;
+		return request(app)
+			.get(`/api/articles?order=${order}`)
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.message).toBe("Invalid order query");
+			});
+	});
+	it("status 400: responds with an error message if topic filter query is invalid data type", () => {
+		const topic = 4;
+		return request(app)
+			.get(`/api/articles?topic=${topic}`)
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.message).toBe("Invalid topic");
+			});
+	});
 });

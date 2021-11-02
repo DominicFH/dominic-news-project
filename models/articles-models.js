@@ -71,10 +71,14 @@ exports.fetchAllArticles = (sortBy = "created_at", order = "desc", topic) => {
 		LEFT JOIN comments
 		ON articles.article_id = comments.article_id`;
 
-	if (topic != undefined) {
+	console.log(typeof topic);
+	if (topic !== undefined) {
 		queryString += `
 		WHERE articles.topic = '${topic}'`;
 	}
+	// else if (typeof topic !== "string") {
+	// 	return Promise.reject({ status: 400, message: "Invalid topic" });
+	// }
 
 	queryString += `
 		GROUP BY 
@@ -84,8 +88,6 @@ exports.fetchAllArticles = (sortBy = "created_at", order = "desc", topic) => {
 		articles.body, 
 		articles.topic
 		ORDER BY ${sortBy} ${order}`;
-
-	console.log(queryString);
 
 	return db.query(queryString).then(({ rows }) => {
 		return rows;
