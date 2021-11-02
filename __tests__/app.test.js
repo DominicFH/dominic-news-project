@@ -123,3 +123,24 @@ describe("PATCH /api/articles/:article_id", () => {
 			});
 	});
 });
+describe("GET /api/articles", () => {
+	it("status 200: responds with an articles array of article objects", () => {
+		return request(app)
+			.get("/api/articles")
+			.expect(200)
+			.then(({ body }) => {
+				expect(body["articles"].length).toBe(12);
+				body["articles"].forEach((topic) => {
+					expect(topic).toEqual({
+						author: expect.any(String),
+						title: expect.any(String),
+						article_id: expect.any(Number),
+						topic: expect.any(String),
+						created_at: expect.any(String),
+						votes: expect.any(Number),
+						comment_count: expect.any(String),
+					});
+				});
+			});
+	});
+});

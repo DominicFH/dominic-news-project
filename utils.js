@@ -15,7 +15,6 @@ exports.extractData = (dataArray, arrayOfValueNames) => {
 
 //Util function to confirm if requested data exists in database
 exports.validateQueryOutput = (queryOutput) => {
-	console.log(reqBody);
 	if (!queryOutput[0]) {
 		return Promise.reject({
 			status: 404,

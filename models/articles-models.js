@@ -4,8 +4,14 @@ const { validateQueryOutput, validateReqBody } = require("../utils");
 exports.fetchArticleById = (articleId) => {
 	return db
 		.query(
-			`SELECT articles.author, title, articles.article_id, 
-            articles.body, topic, articles.created_at, articles.votes,
+			`SELECT 
+			articles.author, 
+			title, 
+			articles.article_id, 
+            articles.body, 
+			topic, 
+			articles.created_at, 
+			articles.votes,
             COUNT(comments.article_id) AS comment_count
             FROM articles
             LEFT JOIN comments
@@ -35,5 +41,27 @@ exports.updateArticleById = (articleId, incVotes) => {
 		})
 		.then((outputData) => {
 			return validateReqBody(outputData, incVotes);
+		});
+};
+
+exports.fetchAllArticles = () => {
+	return db
+		.query(
+			`SELECT 
+		articles.author, 
+		title, 
+		articles.article_id, 
+		topic, 
+		articles.created_at, 
+		articles.votes,
+		COUNT(comments.article_id) AS comment_count
+		FROM articles
+		LEFT JOIN comments
+		ON articles.article_id = comments.article_id
+		GROUP BY articles.author, articles.title, articles.article_id,
+		articles.body, articles.topic;`
+		)
+		.then(({ rows }) => {
+			return rows;
 		});
 };
