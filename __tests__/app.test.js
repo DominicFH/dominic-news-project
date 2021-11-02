@@ -144,11 +144,34 @@ describe("GET /api/articles", () => {
 			});
 	});
 	it("status 200: responds with an articles array of article objects while accepting a sort_by query which defaults to date", () => {
+		const sort_by = "author";
 		return request(app)
-			.get("/api/articles?sort_by=author")
+			.get(`/api/articles?sort_by=${sort_by}`)
 			.expect(200)
 			.then(({ body }) => {
-				expect(body.articles).toBeSortedBy("author");
+				expect(body.articles).toBeSortedBy(`${sort_by}`, { descending: true });
+			});
+	});
+	it("status 200: responds with an articles array of article objects while accepting an order query which defaults to descending", () => {
+		const sort_by = "topic";
+		const order = "asc";
+		return request(app)
+			.get(`/api/articles?sort_by=${sort_by}&order=${order}`)
+			.expect(200)
+			.then(({ body }) => {
+				expect(body.articles).toBeSortedBy(`${sort_by}`, { descending: false });
+			});
+	});
+	it("status 200: responds with an articles array of article objects while accepting a topic query which filters the articles", () => {
+		const sort_by = "article_id";
+		const order = "asc";
+		const topic = "mitch";
+		return request(app)
+			.get(`/api/articles?sort_by=${sort_by}&order=${order}&topic=${topic}`)
+			.expect(200)
+			.then(({ body }) => {
+				expect(body.articles.length).toBe(11);
+				expect(body.articles).toBeSortedBy(`${sort_by}`, { descending: false });
 			});
 	});
 });
