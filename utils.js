@@ -12,3 +12,27 @@ exports.extractData = (dataArray, arrayOfValueNames) => {
 	});
 	return formattedData;
 };
+
+//Util function to confirm if requested data exists in database
+exports.validateQueryOutput = (queryOutput) => {
+	console.log(reqBody);
+	if (!queryOutput[0]) {
+		return Promise.reject({
+			status: 404,
+			message: "No article found",
+		});
+	} else {
+		return queryOutput;
+	}
+};
+
+// Util function to confirm if request body is valid
+exports.validateReqBody = (queryOutput, reqBody) => {
+	if (!reqBody) {
+		return Promise.reject({
+			status: 400,
+			message: "Invalid input",
+		});
+	}
+	return queryOutput;
+};

@@ -71,8 +71,9 @@ describe("GET /api/articles/:article_id", () => {
 describe("PATCH /api/articles/:article_id", () => {
 	it("status 200: responds with an article with votes updated using the input object", () => {
 		const incVotesObj = { inc_votes: 3 };
+		const article_id = 1;
 		return request(app)
-			.patch("/api/articles/1")
+			.patch(`/api/articles/${article_id}`)
 			.send(incVotesObj)
 			.expect(200)
 			.then(({ body }) => {
@@ -86,6 +87,39 @@ describe("PATCH /api/articles/:article_id", () => {
 					votes: expect.any(Number),
 				});
 				expect(body.updated_article[0].votes).toBe(103);
+			});
+	});
+	it("status 404: responds with error message if article is is not in the database", () => {
+		const incVotesObj = { inc_votes: 3 };
+		const article_id = 99;
+		return request(app)
+			.patch(`/api/articles/${article_id}`)
+			.send(incVotesObj)
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.message).toBe("No article found");
+			});
+	});
+	it("status 400: responds with error message if article id is an invalid date type", () => {
+		const incVotesObj = { inc_votes: 3 };
+		const article_id = "HELLO";
+		return request(app)
+			.patch(`/api/articles/${article_id}`)
+			.send(incVotesObj)
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.message).toBe("Invalid input");
+			});
+	});
+	it("status 400: responds with error message if request body is invalid", () => {
+		const incVotesObj = { inc_dates: 3 };
+		const article_id = 1;
+		return request(app)
+			.patch(`/api/articles/${article_id}`)
+			.send(incVotesObj)
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.message).toBe("Invalid input");
 			});
 	});
 });

@@ -1,4 +1,5 @@
 const db = require("../db");
+const { validateQueryOutput, validateReqBody } = require("../utils");
 
 exports.fetchArticleById = (articleId) => {
 	return db
@@ -15,14 +16,7 @@ exports.fetchArticleById = (articleId) => {
 			[articleId]
 		)
 		.then(({ rows }) => {
-			const article = rows;
-			if (!article[0]) {
-				return Promise.reject({
-					status: 404,
-					message: "No article found",
-				});
-			}
-			return rows;
+			return validateQueryOutput(rows);
 		});
 };
 
@@ -37,6 +31,9 @@ exports.updateArticleById = (articleId, incVotes) => {
 			[incVotes, articleId]
 		)
 		.then(({ rows }) => {
-			return rows;
+			return validateQueryOutput(rows);
+		})
+		.then((outputData) => {
+			return validateReqBody(outputData, incVotes);
 		});
 };
