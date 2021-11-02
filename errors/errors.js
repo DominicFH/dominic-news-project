@@ -4,7 +4,13 @@ exports.handleCustomError = (err, req, res, next) => {
 	} else next(err);
 };
 
+exports.handle400Error = (err, req, res, next) => {
+	if (err.code === "22P02") {
+		res.status(400).send({ message: "Invalid input" });
+	} else next(err);
+};
+
 exports.handleServerError = (err, req, res, next) => {
-	console.log(err.code);
+	console.log(err);
 	res.status(500).send({ message: "Internal server error" });
 };
