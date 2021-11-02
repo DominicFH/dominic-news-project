@@ -143,4 +143,12 @@ describe("GET /api/articles", () => {
 				});
 			});
 	});
+	it("status 200: responds with an articles array of article objects while accepting a sort_by query which defaults to date", () => {
+		return request(app)
+			.get("/api/articles?sort_by=author")
+			.expect(200)
+			.then(({ body }) => {
+				expect(body.articles).toBeSortedBy("author");
+			});
+	});
 });

@@ -10,9 +10,7 @@ exports.getArticleById = (req, res, next) => {
 		.then((article) => {
 			res.status(200).send({ article });
 		})
-		.catch((err) => {
-			next(err);
-		});
+		.catch(next);
 };
 
 exports.patchArticleById = (req, res, next) => {
@@ -22,13 +20,14 @@ exports.patchArticleById = (req, res, next) => {
 		.then((updated_article) => {
 			res.status(200).send({ updated_article });
 		})
-		.catch((err) => {
-			next(err);
-		});
+		.catch(next);
 };
 
 exports.getAllArticles = (req, res, next) => {
-	fetchAllArticles().then((articles) => {
-		res.status(200).send({ articles });
-	});
+	const { sort_by } = req.query;
+	fetchAllArticles(sort_by)
+		.then((articles) => {
+			res.status(200).send({ articles });
+		})
+		.catch(next);
 };
