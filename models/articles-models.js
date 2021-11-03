@@ -91,6 +91,10 @@ exports.fetchAllArticles = (sortBy = "created_at", order = "desc", topic) => {
 			ORDER BY ${sortBy} ${order}`;
 
 	return db.query(queryString).then(({ rows }) => {
-		return rows;
+		if (rows.length === 0) {
+			return Promise.reject({ status: 404, message: "No articles found" });
+		} else {
+			return rows;
+		}
 	});
 };

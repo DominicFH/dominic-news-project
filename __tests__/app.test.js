@@ -3,6 +3,7 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
 const app = require("../app");
+const { sort } = require("../db/data/test-data/articles.js");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -199,6 +200,16 @@ describe("GET /api/articles", () => {
 			.expect(404)
 			.then(({ body }) => {
 				expect(body.message).toBe("Topic not found");
+			});
+	});
+	it("status 404: responds with an error message if request and any queries are valid but no articles found", () => {
+		const sort_by = "title";
+		const topic = "paper";
+		return request(app)
+			.get(`/api/articles?sort_by=${sort_by}&topic=${topic}`)
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.message).toBe("No articles found");
 			});
 	});
 });
