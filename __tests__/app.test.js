@@ -192,13 +192,13 @@ describe("GET /api/articles", () => {
 				expect(body.message).toBe("Invalid order query");
 			});
 	});
-	it("status 400: responds with an error message if topic filter query is invalid data type", () => {
-		const topic = 4;
+	it("status 404: responds with an error message if topic filter query is provided but topic does not exist", () => {
+		const topic = "4";
 		return request(app)
 			.get(`/api/articles?topic=${topic}`)
-			.expect(400)
+			.expect(404)
 			.then(({ body }) => {
-				expect(body.message).toBe("Invalid topic");
+				expect(body.message).toBe("Topic not found");
 			});
 	});
 });

@@ -12,5 +12,6 @@ exports.handle400Error = (err, req, res, next) => {
 
 exports.handleServerError = (err, req, res, next) => {
 	console.log(err);
+	console.log("SQL syntax error position:", err.position);
 	res.status(500).send({ message: "Internal server error" });
 };
