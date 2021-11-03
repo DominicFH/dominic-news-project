@@ -21,6 +21,11 @@ exports.fetchCommentsByArticleId = (articleId) => {
 
 exports.insertCommentByArticleId = (articleId, newComment) => {
 	const { username, body } = newComment;
+
+	if (!username || !body) {
+		return Promise.reject({ status: 400, message: "Invalid input" });
+	}
+
 	return db
 		.query(
 			`INSERT INTO comments (author, article_id, body)

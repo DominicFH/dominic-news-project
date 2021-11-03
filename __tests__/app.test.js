@@ -359,6 +359,20 @@ describe("/api/articles/:article_id/comments", () => {
 						expect(body.message).toBe("Requested ID not found");
 					});
 			});
+			it("status 400: responds with an error message if new comment is not valid", () => {
+				const testComment = {
+					userGnome: "icellusedkars",
+					body: "test comment",
+				};
+				const article_id = 1;
+				return request(app)
+					.post(`/api/articles/${article_id}/comments`)
+					.send(testComment)
+					.expect(400)
+					.then(({ body }) => {
+						expect(body.message).toBe("Invalid input");
+					});
+			});
 		});
 	});
 	describe("NO METHOD", () => {
