@@ -5,24 +5,14 @@ exports.fetchArticleById = (articleId) => {
 	return db
 		.query(
 			`SELECT 
-			articles.author, 
-			title, 
-			articles.article_id, 
-            articles.body, 
-			topic, 
-			articles.created_at, 
-			articles.votes,
-            COUNT(comments.article_id) AS comment_count
+			articles.*,
+            COUNT(comments.comment_id) AS comment_count
             FROM articles
             LEFT JOIN comments
             ON articles.article_id = comments.article_id
             WHERE articles.article_id = $1
             GROUP BY 
-			articles.author, 
-			articles.title, 
-			articles.article_id,
-            articles.body, 
-			articles.topic;`,
+			articles.article_id;`,
 			[articleId]
 		)
 		.then(({ rows }) => {
@@ -62,13 +52,13 @@ exports.fetchAllArticles = (sortBy = "created_at", order = "desc", topic) => {
 
 	let queryString = `
 		SELECT 
-		articles.author, 
-		title, 
-		articles.article_id, 
-		topic, 
-		articles.created_at, 
+		articles.author,
+		articles.title,
+		articles.article_id,
+		articles.topic,
+		articles.created_at,
 		articles.votes,
-		COUNT(comments.article_id) AS comment_count
+		COUNT(comments.comment_id) AS comment_count
 		FROM articles
 		LEFT JOIN comments
 		ON articles.article_id = comments.article_id`;
@@ -82,13 +72,13 @@ exports.fetchAllArticles = (sortBy = "created_at", order = "desc", topic) => {
 	}
 
 	queryString += `
-			GROUP BY 
-			articles.author, 
-			articles.title,
-			articles.article_id,
-			articles.body, 
-			articles.topic
-			ORDER BY ${sortBy} ${order}`;
+		GROUP BY 
+		articles.author, 
+		articles.title,
+		articles.article_id,
+		articles.body, 
+		articles.topic
+		ORDER BY ${sortBy} ${order}`;
 
 	return db.query(queryString).then(({ rows }) => {
 		if (rows.length === 0) {
