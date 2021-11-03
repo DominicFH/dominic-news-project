@@ -327,6 +327,27 @@ describe("/api/articles/:article_id/comments", () => {
 			});
 		});
 	});
+	describe("POST", () => {
+		describe("SUCCESS", () => {
+			it("status 201: responds with the posted comment object", () => {
+				const testComment = { username: "icellusedkars", body: "test comment" };
+				const article_id = 3;
+				return request(app)
+					.post(`/api/articles/${article_id}/comments`)
+					.send(testComment)
+					.expect(201)
+					.then(({ body }) => {
+						expect(body.comment[0]).toMatchObject({
+							body: expect.any(String),
+							votes: expect.any(Number),
+							author: expect.any(String),
+							article_id: expect.any(Number),
+							created_at: expect.any(String),
+						});
+					});
+			});
+		});
+	});
 	describe("NO METHOD", () => {
 		it("status 405: responds with error message if making a forbidden request", () => {
 			return request(app)

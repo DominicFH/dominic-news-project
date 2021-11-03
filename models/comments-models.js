@@ -18,3 +18,17 @@ exports.fetchCommentsByArticleId = (articleId) => {
 			return validateQueryOutput(rows);
 		});
 };
+
+exports.insertCommentByArticleId = (articleId, newComment) => {
+	const { username, body } = newComment;
+	return db
+		.query(
+			`INSERT INTO comments (author, article_id, body)
+			VALUES ($1, $2, $3)
+			RETURNING *;`,
+			[username, articleId, body]
+		)
+		.then(({ rows }) => {
+			return rows;
+		});
+};

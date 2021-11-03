@@ -7,6 +7,7 @@ const {
 } = require("../controllers/articles-controllers");
 const {
 	getCommentsByArticleId,
+	postCommentByArticleId,
 } = require("../controllers/comments-controllers");
 
 articlesRouter.route("/").get(getAllArticles).all(forbiddenMethod);
@@ -20,6 +21,7 @@ articlesRouter
 articlesRouter
 	.route("/:article_id/comments")
 	.get(getCommentsByArticleId)
+	.post(postCommentByArticleId)
 	.all(forbiddenMethod);
 
 module.exports = articlesRouter;
