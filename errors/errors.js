@@ -7,7 +7,7 @@ exports.handleCustomError = (err, req, res, next) => {
 exports.handle400Error = (err, req, res, next) => {
 	if (err.code === "22P02") {
 		res.status(400).send({ message: "Invalid ID type" });
-	} else if (err.code === "23502") {
+	} else if (err.code === "23502" || err.code === "22001") {
 		res.status(400).send({ message: "Invalid input" });
 	} else next(err);
 };

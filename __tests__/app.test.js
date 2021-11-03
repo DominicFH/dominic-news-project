@@ -359,10 +359,35 @@ describe("/api/articles/:article_id/comments", () => {
 						expect(body.message).toBe("Requested ID not found");
 					});
 			});
-			it("status 400: responds with an error message if new comment is not valid", () => {
+			it("status 400: responds with an error message if article id is an invalid data type", () => {
+				const testComment = { username: "icellusedkars", body: "test comment" };
+				const article_id = "HEY";
+				return request(app)
+					.post(`/api/articles/${article_id}/comments`)
+					.send(testComment)
+					.expect(400)
+					.then(({ body }) => {
+						expect(body.message).toBe("Invalid ID type");
+					});
+			});
+			it("status 400: responds with an error message if new comment does not have body or username properties", () => {
 				const testComment = {
 					userGnome: "icellusedkars",
 					body: "test comment",
+				};
+				const article_id = 1;
+				return request(app)
+					.post(`/api/articles/${article_id}/comments`)
+					.send(testComment)
+					.expect(400)
+					.then(({ body }) => {
+						expect(body.message).toBe("Invalid input");
+					});
+			});
+			it("status 400: responds with an error message if new comment does not have valid body or username values", () => {
+				const testComment = {
+					username: "thisisausernamewhichismorethantwentycharacters",
+					body: 3,
 				};
 				const article_id = 1;
 				return request(app)
