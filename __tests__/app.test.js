@@ -71,13 +71,13 @@ describe("/api/articles/:article_id", () => {
 			});
 		});
 		describe("ERRORS", () => {
-			it("status 404: responds with error message if article id is not in the database ", () => {
+			it("status 404: responds with error message if article id is valid but not in the database ", () => {
 				const article_id = 99;
 				return request(app)
 					.get(`/api/articles/${article_id}`)
 					.expect(404)
 					.then(({ body }) => {
-						expect(body.message).toBe("No article with that id");
+						expect(body.message).toBe("No data found");
 					});
 			});
 			it("status 400: responds with error message if article id is an invalid data type", () => {
@@ -86,7 +86,7 @@ describe("/api/articles/:article_id", () => {
 					.get(`/api/articles/${article_id}`)
 					.expect(400)
 					.then(({ body }) => {
-						expect(body.message).toBe("Invalid input");
+						expect(body.message).toBe("Invalid ID type");
 					});
 			});
 		});
@@ -115,7 +115,7 @@ describe("/api/articles/:article_id", () => {
 			});
 		});
 		describe("ERRORS", () => {
-			it("status 404: responds with error message if article is is not in the database", () => {
+			it("status 404: responds with error message if article valid but not in the database", () => {
 				const incVotesObj = { inc_votes: 3 };
 				const article_id = 99;
 				return request(app)
@@ -123,7 +123,7 @@ describe("/api/articles/:article_id", () => {
 					.send(incVotesObj)
 					.expect(404)
 					.then(({ body }) => {
-						expect(body.message).toBe("No article with that id");
+						expect(body.message).toBe("No data found");
 					});
 			});
 			it("status 400: responds with error message if article id is an invalid date type", () => {
@@ -134,7 +134,7 @@ describe("/api/articles/:article_id", () => {
 					.send(incVotesObj)
 					.expect(400)
 					.then(({ body }) => {
-						expect(body.message).toBe("Invalid input");
+						expect(body.message).toBe("Invalid ID type");
 					});
 			});
 			it("status 400: responds with error message if request body is invalid", () => {
@@ -298,13 +298,31 @@ describe("/api/articles/:article_id/comments", () => {
 			});
 		});
 		describe("ERRORS", () => {
-			it("status 404: responds with an error message if article id is not in the database", () => {
+			it("status 404: responds with an error message if article id is valid but not in the database", () => {
 				const article_id = 999;
 				return request(app)
 					.get(`/api/articles/${article_id}/comments`)
 					.expect(404)
 					.then(({ body }) => {
-						expect(body.message).toBe("No article with that id");
+						expect(body.message).toBe("No data found");
+					});
+			});
+			it("status 404: responds with an error message if article id is valid but no comments found", () => {
+				const article_id = 2;
+				return request(app)
+					.get(`/api/articles/${article_id}/comments`)
+					.expect(404)
+					.then(({ body }) => {
+						expect(body.message).toBe("No data found");
+					});
+			});
+			it("status 400: responds with an error message if article id is an invalid data type", () => {
+				const article_id = "HEY";
+				return request(app)
+					.get(`/api/articles/${article_id}/comments`)
+					.expect(400)
+					.then(({ body }) => {
+						expect(body.message).toBe("Invalid ID type");
 					});
 			});
 		});

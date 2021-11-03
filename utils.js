@@ -12,12 +12,12 @@ exports.extractData = (dataArray, arrayOfValueNames) => {
 	return formattedData;
 };
 
-//Util function to confirm if requested data exists in database
+//Util function to confirm if requested data is found in database
 exports.validateQueryOutput = (queryOutput) => {
 	if (!queryOutput[0]) {
 		return Promise.reject({
 			status: 404,
-			message: "No article with that id",
+			message: "No data found",
 		});
 	} else {
 		return queryOutput;
