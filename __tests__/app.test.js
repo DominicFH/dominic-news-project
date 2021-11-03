@@ -259,26 +259,26 @@ describe("/api/articles", () => {
 });
 
 describe("/api/articles/:article_id/comments", () => {
-	// describe("GET", () => {
-	// 	it("status 200: responds with a comments array of comment objects for the provided article id", () => {
-	// 		const article_id = 1;
-	// 		request(app)
-	// 			.get(`/api/articles/${article_id}/comments`)
-	// 			.expect(200)
-	// 			.then(({ body }) => {
-	// 				expect(body["comments"].length).toBe(11);
-	// 				body["comments"].forEach((comment) => {
-	// 					expect(comment).toMatchObject({
-	// 						comment_id: expect.any(String),
-	// 						votes: expect.any(Number),
-	// 						created_at: expect.any(String),
-	// 						author: expect.any(String),
-	// 						body: expect.any(String),
-	// 					});
-	// 				});
-	// 			});
-	// 	});
-	// });
+	describe("GET", () => {
+		it("status 200: responds with a comments array of comment objects for the provided article id", () => {
+			const article_id = 1;
+			return request(app)
+				.get(`/api/articles/${article_id}/comments`)
+				.expect(200)
+				.then(({ body }) => {
+					expect(body["comments"].length).toBe(11);
+					body["comments"].forEach((comment) => {
+						expect(comment).toMatchObject({
+							comment_id: expect.any(Number),
+							votes: expect.any(Number),
+							created_at: expect.any(String),
+							author: expect.any(String),
+							body: expect.any(String),
+						});
+					});
+				});
+		});
+	});
 	describe("Unavailable Methods", () => {
 		it("status 405: responds with error message if making a forbidden request", () => {
 			return request(app)
