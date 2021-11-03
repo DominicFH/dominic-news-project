@@ -1,6 +1,5 @@
 // Take array of objects and turn into usable INSERT array
 // For each object in the array, store its values in a nested array
-
 exports.extractData = (dataArray, arrayOfValueNames) => {
 	const formattedData = [];
 	dataArray.forEach((indObject) => {
@@ -34,4 +33,9 @@ exports.validateReqBody = (queryOutput, reqBody) => {
 		});
 	}
 	return queryOutput;
+};
+
+// Util function to respond to an invalid request made on a valid path
+exports.forbiddenMethod = (req, res) => {
+	res.status(405).send({ message: "Method not available" });
 };
