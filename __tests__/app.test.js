@@ -347,6 +347,19 @@ describe("/api/articles/:article_id/comments", () => {
 					});
 			});
 		});
+		describe("ERRORS", () => {
+			it("status 404: responds with an error message if article id is valid but not in the database", () => {
+				const testComment = { username: "icellusedkars", body: "test comment" };
+				const article_id = 999;
+				return request(app)
+					.post(`/api/articles/${article_id}/comments`)
+					.send(testComment)
+					.expect(404)
+					.then(({ body }) => {
+						expect(body.message).toBe("Requested ID not found");
+					});
+			});
+		});
 	});
 	describe("NO METHOD", () => {
 		it("status 405: responds with error message if making a forbidden request", () => {

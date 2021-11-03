@@ -4,6 +4,7 @@ const {
 	handleCustomError,
 	handleServerError,
 	handle400Error,
+	handle404Error,
 } = require("./errors/errors");
 
 const app = express();
@@ -18,6 +19,7 @@ app.all("*", (req, res, next) => {
 
 app.use(handleCustomError);
 app.use(handle400Error);
+app.use(handle404Error);
 app.use(handleServerError);
 
 module.exports = app;

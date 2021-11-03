@@ -10,6 +10,12 @@ exports.handle400Error = (err, req, res, next) => {
 	} else next(err);
 };
 
+exports.handle404Error = (err, req, res, next) => {
+	if (err.code === "23503") {
+		res.status(404).send({ message: "Requested ID not found" });
+	} else next(err);
+};
+
 exports.handleServerError = (err, req, res, next) => {
 	console.log(err);
 	console.log("SQL syntax error position:", err.position);
