@@ -17,7 +17,7 @@ exports.validateQueryOutput = (queryOutput) => {
 	if (!queryOutput[0]) {
 		return Promise.reject({
 			status: 404,
-			message: "No article found",
+			message: "No article with that id",
 		});
 	} else {
 		return queryOutput;

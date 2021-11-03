@@ -1,8 +1,7 @@
 const db = require("../db");
+const { validateQueryOutput } = require("../utils");
 
 exports.fetchCommentsByArticleId = (articleId) => {
-	console.log("inside model");
-	console.log(articleId);
 	return db
 		.query(
 			`SELECT
@@ -16,6 +15,6 @@ exports.fetchCommentsByArticleId = (articleId) => {
 			[articleId]
 		)
 		.then(({ rows }) => {
-			return rows;
+			return validateQueryOutput(rows);
 		});
 };
