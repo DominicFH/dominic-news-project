@@ -15,8 +15,8 @@ describe("/api/topics", () => {
 					.get("/api/topics")
 					.expect(200)
 					.then(({ body }) => {
-						expect(body["topics"].length).toBe(3);
-						body["topics"].forEach((topic) => {
+						expect(body.topics.length).toBe(3);
+						body.topics.forEach((topic) => {
 							expect(topic).toEqual({
 								description: expect.any(String),
 								slug: expect.any(String),
@@ -125,7 +125,7 @@ describe("/api/articles/:article_id", () => {
 						expect(body.message).toBe("No data found");
 					});
 			});
-			it("status 400: responds with error message if article id is an invalid date type", () => {
+			it("status 400: responds with error message if article id is an invalid data type", () => {
 				const incVotesObj = { inc_votes: 3 };
 				const article_id = "HELLO";
 				return request(app)
