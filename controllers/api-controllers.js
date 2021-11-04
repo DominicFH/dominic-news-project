@@ -1,5 +1,4 @@
 exports.getApi = (req, res, next) => {
-	console.log("Inside controller");
 	res.status(200).send({
 		"GET /api": {
 			description:
