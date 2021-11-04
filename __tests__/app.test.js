@@ -411,3 +411,14 @@ describe("/api/articles/:article_id/comments", () => {
 		});
 	});
 });
+
+describe("/api/comments/:commentid", () => {
+	describe("SUCCESS", () => {
+		it("status 204: no response body, successfully deletes requested comment", () => {
+			const testCommentToDelete = 1;
+			return request(app)
+				.delete(`/api/comments/${testCommentToDelete}`)
+				.expect(204);
+		});
+	});
+});

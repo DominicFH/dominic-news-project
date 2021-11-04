@@ -1,3 +1,4 @@
+const { query } = require("../db");
 const db = require("../db");
 const { validateQueryOutput } = require("../utils");
 
@@ -53,4 +54,15 @@ exports.insertCommentByArticleId = (articleId, newComment) => {
 		.then(({ rows }) => {
 			return rows;
 		});
+};
+
+exports.removeCommentById = (commentId) => {
+	console.log("Inside model");
+	console.log(commentId);
+	return db.query(
+		`
+		DELETE FROM comments
+		WHERE comment_id = $1;`,
+		[commentId]
+	);
 };
