@@ -3,7 +3,6 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
 const app = require("../app");
-const { sort, forEach } = require("../db/data/test-data/articles.js");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -402,8 +401,9 @@ describe("/api/articles/:article_id/comments", () => {
 	});
 	describe("NO METHOD", () => {
 		it("status 405: responds with error message if making a forbidden request", () => {
+			const testArticleId = 1;
 			return request(app)
-				.delete("/api/topics")
+				.delete(`/api/articles/${testArticleId}/comments`)
 				.expect(405)
 				.then(({ body }) => {
 					expect(body.message).toBe("Method not available");
@@ -441,6 +441,17 @@ describe("/api/comments/:commentid", () => {
 						expect(body.message).toBe("Invalid ID type");
 					});
 			});
+		});
+	});
+	describe("NO METHOD", () => {
+		it("status 405: responds with error message if making a forbidden request", () => {
+			const testCommentToGet = 1;
+			return request(app)
+				.get(`/api/comments/${testCommentToGet}`)
+				.expect(405)
+				.then(({ body }) => {
+					expect(body.message).toBe("Method not available");
+				});
 		});
 	});
 });
