@@ -1,4 +1,3 @@
-const { query } = require("../db");
 const db = require("../db");
 const { validateQueryOutput } = require("../utils");
 
@@ -67,7 +66,6 @@ exports.removeCommentById = (commentId) => {
 		.then((deleteConf) => {
 			const { rowCount } = deleteConf;
 			if (rowCount === 0) {
-				console.log("Inside promise reject");
 				return Promise.reject({
 					status: 404,
 					message: "No comment found to delete",

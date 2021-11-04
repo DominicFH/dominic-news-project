@@ -455,3 +455,13 @@ describe("/api/comments/:commentid", () => {
 		});
 	});
 });
+
+describe("/api", () => {
+	describe("GET", () => {
+		describe("SUCCESS", () => {
+			it.only("status 200: responds with a JSON object describing available endpoints", () => {
+				return request(app).get(`/api`).expect(200);
+			});
+		});
+	});
+});
