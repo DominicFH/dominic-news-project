@@ -13,7 +13,6 @@ exports.getCommentsByArticleId = (req, res, next) => {
 };
 
 exports.postCommentByArticleId = (req, res, next) => {
-	console.log(req.body);
 	const newComment = req.body;
 	const { article_id } = req.params;
 

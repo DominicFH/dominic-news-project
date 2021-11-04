@@ -331,7 +331,7 @@ describe("/api/articles/:article_id/comments", () => {
 		describe("SUCCESS", () => {
 			it("status 201: responds with the posted comment object", () => {
 				const testComment = { username: "icellusedkars", body: "test comment" };
-				const article_id = 3;
+				const article_id = 1;
 				return request(app)
 					.post(`/api/articles/${article_id}/comments`)
 					.send(testComment)
@@ -384,18 +384,18 @@ describe("/api/articles/:article_id/comments", () => {
 						expect(body.message).toBe("Invalid input");
 					});
 			});
-			it("status 400: responds with an error message if new comment does not have valid body or username values", () => {
+			it("status 404: responds with an error message if new comment username does not currently exist", () => {
 				const testComment = {
-					username: "thisisausernamewhichismorethantwentycharacters",
-					body: 3,
+					username: "test_user",
+					body: "3",
 				};
 				const article_id = 1;
 				return request(app)
 					.post(`/api/articles/${article_id}/comments`)
 					.send(testComment)
-					.expect(400)
+					.expect(404)
 					.then(({ body }) => {
-						expect(body.message).toBe("Invalid input");
+						expect(body.message).toBe("User does not exist");
 					});
 			});
 		});

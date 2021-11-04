@@ -26,6 +26,23 @@ exports.insertCommentByArticleId = (articleId, newComment) => {
 		return Promise.reject({ status: 400, message: "Invalid input" });
 	}
 
+	if (
+		![
+			"tickle122",
+			"grumpy19",
+			"happyamy2016",
+			"cooljmessy",
+			"weegembump",
+			"jessjelly",
+			"butter_bridge",
+			"icellusedkars",
+			"rogersop",
+			"lurker",
+		].includes(username)
+	) {
+		return Promise.reject({ status: 404, message: "User does not exist" });
+	}
+
 	return db
 		.query(
 			`INSERT INTO comments (author, article_id, body)
