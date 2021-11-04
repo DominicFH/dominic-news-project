@@ -23,7 +23,7 @@ const seed = (data) => {
 			.then(() => {
 				return db.query(`
 					CREATE TABLE topics (
-					slug VARCHAR NOT NULL UNIQUE PRIMARY KEY,
+					slug VARCHAR PRIMARY KEY,
 					description TEXT NOT NULL
 					);`
 				);
@@ -32,7 +32,7 @@ const seed = (data) => {
 			.then(() => {
 				return db.query(`
 					CREATE TABLE users (
-					username VARCHAR (20) NOT NULL UNIQUE PRIMARY KEY,
+					username VARCHAR (20) PRIMARY KEY,
 					avatar_url TEXT,
 					name VARCHAR (30)
 					);`
@@ -58,7 +58,7 @@ const seed = (data) => {
 					CREATE TABLE comments (
 					comment_id SERIAL PRIMARY KEY,
 					author VARCHAR (20) references users(username),
-					article_id INT references articles(article_id),
+					article_id INT references articles(article_id) ON DELETE CASCADE,
 					votes INT DEFAULT 0,
 					created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 					body TEXT NOT NULL
