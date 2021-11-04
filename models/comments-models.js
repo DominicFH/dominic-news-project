@@ -57,12 +57,21 @@ exports.insertCommentByArticleId = (articleId, newComment) => {
 };
 
 exports.removeCommentById = (commentId) => {
-	console.log("Inside model");
-	console.log(commentId);
-	return db.query(
-		`
-		DELETE FROM comments
-		WHERE comment_id = $1;`,
-		[commentId]
-	);
+	return db
+		.query(
+			`
+			DELETE FROM comments
+			WHERE comment_id = $1;`,
+			[commentId]
+		)
+		.then((deleteConf) => {
+			const { rowCount } = deleteConf;
+			if (rowCount === 0) {
+				console.log("Inside promise reject");
+				return Promise.reject({
+					status: 404,
+					message: "No comment found to delete",
+				});
+			} else return;
+		});
 };

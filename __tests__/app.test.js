@@ -421,4 +421,15 @@ describe("/api/comments/:commentid", () => {
 				.expect(204);
 		});
 	});
+	describe("ERROR", () => {
+		it("status 404: responds with an error message if comment id is valid but not currently in the database", () => {
+			const testCommentToDelete = 9999;
+			return request(app)
+				.delete(`/api/comments/${testCommentToDelete}`)
+				.expect(404)
+				.then(({ body }) => {
+					expect(body.message).toBe("No comment found to delete");
+				});
+		});
+	});
 });
