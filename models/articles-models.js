@@ -56,12 +56,7 @@ exports.fetchAllArticles = (sortBy = "created_at", order = "desc", topic) => {
 
 	let queryString = `
 		SELECT 
-		articles.author,
-		articles.title,
-		articles.article_id,
-		articles.topic,
-		articles.created_at,
-		articles.votes,
+		articles.*,
 		COUNT(comments.comment_id) AS comment_count
 		FROM articles
 		LEFT JOIN comments
@@ -76,12 +71,7 @@ exports.fetchAllArticles = (sortBy = "created_at", order = "desc", topic) => {
 	}
 
 	queryString += `
-		GROUP BY 
-		articles.author, 
-		articles.title,
-		articles.article_id,
-		articles.body, 
-		articles.topic
+		GROUP BY articles.article_id
 		ORDER BY ${sortBy} ${order}`;
 
 	return db.query(queryString).then(({ rows }) => {
