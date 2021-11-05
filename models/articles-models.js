@@ -1,5 +1,5 @@
 const db = require("../db");
-const { validateQueryOutput, validateReqBody } = require("../utils");
+const { validateQueryOutput } = require("../utils");
 
 exports.fetchArticleById = (articleId) => {
 	return db
@@ -21,21 +21,25 @@ exports.fetchArticleById = (articleId) => {
 };
 
 exports.updateArticleById = (articleId, incVotes) => {
-	return db
-		.query(
-			`
-		UPDATE articles
-		SET votes = votes + $1
-		WHERE article_id = $2
-		RETURNING *;`,
-			[incVotes, articleId]
-		)
-		.then(({ rows }) => {
-			return validateQueryOutput(rows);
-		})
-		.then((outputData) => {
-			return validateReqBody(outputData, incVotes);
+	if (!incVotes) {
+		return Promise.reject({
+			status: 400,
+			message: "Invalid input",
 		});
+	} else {
+		return db
+			.query(
+				`
+				UPDATE articles
+				SET votes = votes + $1
+				WHERE article_id = $2
+				RETURNING *;`,
+				[incVotes, articleId]
+			)
+			.then(({ rows }) => {
+				return validateQueryOutput(rows);
+			});
+	}
 };
 
 exports.fetchAllArticles = (sortBy = "created_at", order = "desc", topic) => {

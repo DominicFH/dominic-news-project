@@ -100,7 +100,7 @@ describe("/api/articles/:article_id", () => {
 					.send(incVotesObj)
 					.expect(200)
 					.then(({ body }) => {
-						expect(body.updated_article[0]).toMatchObject({
+						expect(body.article[0]).toMatchObject({
 							author: expect.any(String),
 							title: expect.any(String),
 							article_id: expect.any(Number),
@@ -109,7 +109,7 @@ describe("/api/articles/:article_id", () => {
 							created_at: expect.any(String),
 							votes: expect.any(Number),
 						});
-						expect(body.updated_article[0].votes).toBe(103);
+						expect(body.article[0].votes).toBe(103);
 					});
 			});
 		});

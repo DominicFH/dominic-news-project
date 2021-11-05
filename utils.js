@@ -24,17 +24,6 @@ exports.validateQueryOutput = (queryOutput) => {
 	}
 };
 
-// Util function to confirm if request body is valid
-exports.validateReqBody = (queryOutput, reqBody) => {
-	if (!reqBody) {
-		return Promise.reject({
-			status: 400,
-			message: "Invalid input",
-		});
-	}
-	return queryOutput;
-};
-
 // Util function to respond to an invalid request made on a valid path
 exports.forbiddenMethod = (req, res) => {
 	res.status(405).send({ message: "Method not available" });
