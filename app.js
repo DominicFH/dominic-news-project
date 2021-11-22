@@ -8,9 +8,9 @@ const {
 	handle404Error,
 } = require("./errors/errors");
 
-app.use(cors());
-
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
